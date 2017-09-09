@@ -4,10 +4,12 @@
       <h3 class="panel-title">{{title}}</h3>
     </div>
     <div class="panel-body" v-for="(task, index) in tasks" :key="index">
-      <div>
-        <h1>{{task.title}} </h1>
-        <p>{{task.desc}}</p>
-        <p><a class="btn btn-warning btn-xs" @click="backAction(task['.key'], task.status)" v-if="showBack">{{backBtn}}</a> <a class="btn btn-primary btn-xs" @click="nextAction(task['.key'], task.status)" v-if="showNext">{{nextBtn}}</a> <a class="btn btn-danger btn-xs">Delete</a></p>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h1>{{task.title}} </h1>
+          <p>{{task.desc}}</p>
+          <p><a class="btn btn-warning btn-xs" @click="backAction(task['.key'], task.status)" v-if="showBack">{{backBtn}}</a> <a class="btn btn-primary btn-xs" @click="nextAction(task['.key'], task.status)" v-if="showNext">{{nextBtn}}</a> <a class="btn btn-danger btn-xs" @click="deleteAction(task['.key'], task.status)">Delete</a></p>
+        </div>
       </div>
     </div>
     
@@ -81,6 +83,13 @@ export default {
         stat: status
       }
       this.$emit('backAction', obj)
+    },
+    deleteAction (id, status) {
+      let obj = {
+        key: id,
+        stat: status
+      }
+      this.$emit('deleteAction', obj)
     }
   }
 }

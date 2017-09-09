@@ -1,26 +1,33 @@
 <template>
   <div id="board">
-    <button class="btn btn-primary" @click="inputForm = true, tasksBoard = false"> Input task </button>
     <div class="row">
-      <FormCreate @submitTask="submitTask"
+      <div class="col-md-12">
+        <div class="col-md-12">
+          <h1>ADA: Kanban</h1>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <FormCreate @submitTask="submitTask"
       :showInput="inputForm"
-      @cancel="inputForm = false"></FormCreate>  
+      @cancel="inputForm = false, tasksBoard = true" :progress="progress"></FormCreate>
+      </div>  
     </div>
     <div class="row" v-if="tasksBoard">
       <div class="col-md-12">
-        <h1>ADA: Kanban</h1>
-        <h2>{{tasks}} </h2>
-        <div class="col-md-3">
-          <Task status="stat_0" :tasks="stat_0" @nextAction="nextAction" @backAction="backAction"></Task>
+        <div class="col-md-12">
+          <p><button class="btn btn-primary" @click="inputForm = true, tasksBoard = false"> Input task </button></p>
         </div>
         <div class="col-md-3">
-          <Task status="stat_1" :tasks="stat_1" @nextAction="nextAction" @backAction="backAction"></Task>
+          <Task status="stat_0" :tasks="stat_0" @nextAction="nextAction" @backAction="backAction" @deleteAction="deleteAction"></Task>
         </div>
         <div class="col-md-3">
-          <Task status="stat_2" :tasks="stat_2" @nextAction="nextAction" @backAction="backAction"></Task>
+          <Task status="stat_1" :tasks="stat_1" @nextAction="nextAction" @backAction="backAction" @deleteAction="deleteAction"></Task>
         </div>
         <div class="col-md-3">
-          <Task status="stat_3" :tasks="stat_3" @nextAction="nextAction" @backAction="backAction"></Task>
+          <Task status="stat_2" :tasks="stat_2" @nextAction="nextAction" @backAction="backAction" @deleteAction="deleteAction"></Task>
+        </div>
+        <div class="col-md-3">
+          <Task status="stat_3" :tasks="stat_3" @nextAction="nextAction" @backAction="backAction" @deleteAction="deleteAction"></Task>
         </div>
       </div>
     </div>
@@ -51,7 +58,8 @@ export default {
   data () {
     return {
       inputForm: false,
-      tasksBoard: true
+      tasksBoard: true,
+      progress: false
     }
   },
   methods: {
@@ -60,6 +68,9 @@ export default {
       this.inputForm = false
       console.log(data)
       tasksRef.push(data)
+      .then((response) => {
+        this.progress = true
+      })
     },
     nextAction (data) {
       let status = data.stat + 1
@@ -72,6 +83,9 @@ export default {
       tasksRef.child(data.key)
         .child('status')
         .set(status)
+    },
+    deleteAction (data) {
+      tasksRef.child(data.key).remove()
     }
   },
   computed: {
@@ -94,7 +108,7 @@ export default {
 
 <style>
 #board {
-  padding: 20px;
+  padding: 10px;
 }
 
 </style>

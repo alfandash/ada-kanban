@@ -13,8 +13,7 @@
 
       <div class="collape navbar-collapse" id="bs-example-navbar-collapse-2">
         <ul class="nav navbar-nav">
-          <li><router-link to="/create">Create Task</router-link></li>
-          <li><router-link to="/board">Board</router-link></li>
+          <li><router-link to="/">History</router-link></li>
         </ul>
       </div>
     </div>
